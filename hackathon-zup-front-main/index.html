@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bewm vindo...</title>
+</head>
+<body>
+    <script>
+        // Redirecionando para login ou página principal conforme o status de login
+        if (localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'main.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

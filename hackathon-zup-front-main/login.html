@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Entrar</h2>
+        <form onsubmit="login(event)">
+            <div class="form-group">
+                <label for="email">E-Mail:</label>
+                <input type="email" class="form-control" id="email" placeholder="Digite o E-Mail" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="pwd">Senha:</label>
+                <input type="password" class="form-control" id="password" placeholder="Digite a senha" name="pwd" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+            <div class="mt-2">
+                <a href="register.html">Registrar usuário</a>
+            </div>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
