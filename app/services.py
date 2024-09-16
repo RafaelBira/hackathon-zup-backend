@@ -1,4 +1,5 @@
 import bcrypt
+import json
 from core.database import get_db_connection
 
 # Função para criar um novo usuário com senha hash
@@ -43,3 +44,27 @@ def find_user_by_username(username):
         return None
     finally:
         conn.close()
+
+def get_all_users():
+    conn = get_db_connection()
+    c = conn.cursor()
+
+    # Busca todos os usuários na tabela `users`
+    c.execute("SELECT * FROM users")
+    users = c.fetchall()
+
+    # Para cada usuário, buscar seus interesses na tabela `interesses`
+    result = []
+    for user in users:
+        interesses = json.loads(user['interesses']) if user['interesses'] else []
+#        c.execute("SELECT interesse FROM interesses WHERE user_id = ?", (user["id"],))
+#        interesses = [row["interesse"] for row in c.fetchall()]
+
+        result.append({
+            "id": user["id"],
+            "username": user["username"],
+            "interesses": interesses
+        })
+
+    conn.close()
+    return result

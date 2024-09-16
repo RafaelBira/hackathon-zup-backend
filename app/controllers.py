@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.services import create_user, find_user_by_username
+from app.services import create_user, find_user_by_username, get_all_users
+from app.ia import recommend_articles
 import bcrypt
 
 # Definimos um blueprint para gerenciar as rotas do usuário
@@ -47,12 +48,17 @@ def login():
 # Rota para recomendação
 @user_bp.route('/recomendacoes', methods=['GET'])
 def recomendacoes():
+    user_id = request.args.get('user_id', type=int)
+    if not user_id:
+        return jsonify({"error": "Parâmetro `user_id` é obrigatório."}), 400
+
     try:
-        recommendations = [
-            {"recommendation": "Recomendação 1"},
-            {"recommendation": "Recomendação 2"},
-            {"recommendation": "Recomendação 3"},
-        ]
-        return jsonify(recommendations), 200
+        recommendations = recommend_articles(user_id)
+        return jsonify({"recomendations": recommendations}), 200
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
+
+@user_bp.route('/users', methods=['GET'])
+def get_users():
+    users = get_all_users()  # Chama a função que busca todos os usuários
+    return jsonify(users), 200

@@ -1,8 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 from core.database import init_db
 from app.controllers import user_bp
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:9000"}})
 
 # Inicializa o banco de dados (cria a tabela se não existir)
 try:
