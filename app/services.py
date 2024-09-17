@@ -5,16 +5,13 @@ from core.database import get_db_connection
 
 # Função para criar um novo usuário com senha hash
 def create_user(username, email, password, businessName, interests):
-    print(
-        f"username: {username}, email: {email}, password: {password}, interesses: {interests}"
-    )
     try:
         conn = get_db_connection()
         c = conn.cursor()
 
         c.execute(
             """
-            INSERT INTO users (username, email,  password, empreendimento, interesses) 
+            INSERT INTO users (username, email,  password, business, interests) 
             VALUES (?, ?, ?, ?, ?)
         """,
             (username, email, password, businessName, json.dumps(interests)),
@@ -37,7 +34,6 @@ def find_user_by_email(email):
         # Buscar o usuário pelo nome de usuário
         c.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = c.fetchone()
-        print(user)
         # Retornar o usuário (sem expor a senha diretamente)
         if user:
             return {
@@ -67,26 +63,21 @@ def get_all_users():
     # Para cada usuário, buscar seus interesses na tabela `interesses`
     result = []
     for user in users:
-        interesses = []
-        if user["interesses"]:
+        interests = []
+        if user["interests"]:
             try:
-                interesses = json.loads(
-                    user["interesses"]
+                interests = json.loads(
+                    user["interests"]
                 )  # Tenta carregar os interesses como
             except json.JSONDecodeError as e:
                 print(
                     f"Erro ao decodificar JSON em `interesses` para o usuário {user['username']}: {e}"
                 )
-        #        c.execute("SELECT interesse FROM interesses WHERE user_id = ?", (user["id"],))
-        #        interesses = [row["interesse"] for row in c.fetchall()]
-
         result.append(
             {
                 "id": user["id"],
                 "username": user["username"],
-                #            "email": user["email"],
-                #            "password": user["password"],
-                "interesses": interesses,
+                "interests": interests,
             }
         )
 

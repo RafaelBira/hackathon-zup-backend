@@ -30,7 +30,7 @@ def register():
             username = request.form.get("userName")
             email = request.form.get("email")
             password = request.form.get("password")
-            businessName = request.form.get("empreendimento")
+            businessName = request.form.get("business")
             interests = request.form.getlist(
                 "areasOfInterest"
             )  # Captura os valores dos checkboxes selecionados
@@ -80,6 +80,11 @@ def login():
     return render_template("login.html")
 
 
+@user_bp.route("/")
+def login_redirect():
+    return redirect(url_for("user_bp.login"))
+
+
 # Rota para obter todos os usuários
 @user_bp.route("/users", methods=["GET"])
 def get_users():
@@ -93,7 +98,6 @@ def get_users():
 def main_page():
     # Resgata o ID do usuário da sessão
     user_id = session.get("user_id")
-    # user_id = session.get('user_id', default=1, type=int)
 
     if not user_id:
         return redirect(
