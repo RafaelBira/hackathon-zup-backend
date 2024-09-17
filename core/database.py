@@ -72,7 +72,7 @@ def init_db():
             )
             print("Usuários inseridos com sucesso!")
 
-            artigos = [
+            articles = [
                 (
                     "Tendências em Inteligência Artificial",
                     "Explorando as principais tendências e inovações em IA para o futuro.",
@@ -113,7 +113,7 @@ def init_db():
             c.executemany(
                 """INSERT INTO artigos (titulo, descricao, link) 
                              VALUES (?, ?, ?)""",
-                artigos,
+                articles,
             )
             print("Artigos inseridos com sucesso!")
 
