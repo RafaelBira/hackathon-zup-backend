@@ -49,7 +49,7 @@ def recommend_articles(user_id):
     api_request_json = {
         "messages": [
             {"role": "system", "content": f"Interesses do usuário: {interesses_str}. Artigos: {artigos_str}"},
-            {"role": "user", "content": "Responde em portugues do brasil. Dentre os artigos enviados, de acordo com os interesses do usuário, quais os artigos recomendados para esse usuário (pode ter mais de um por interesse. Retorne apenas o nome dos artigos, separados por ponto e vírgula. Nada mais"}
+            {"role": "user", "content": "Responda separado por Artigo em ligua portuguesa as recomendacoes que se enquadram no perfil desse usuario, apenas o nome do artigo e nada mais. Resposta deve ser em portugues separando os resultados por ';'"}
         ],
         "max_tokens": 200
     }
