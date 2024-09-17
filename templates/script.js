@@ -1,23 +1,26 @@
 
 async function login(event) {
     event.preventDefault();
-
-        const loginData = {
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value
+    const loginData = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
     };
-
-    const response = await fetch('http://localhost:8000/login/', {
-        method: 'POST',
+    
+    const response = await fetch('http://localhost:5000/login/', {  // Verifique se a porta está correta
+        method: 'POST',  // Certifique-se de que o método é POST
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: loginData.email, password: loginData.password }),
+        body: JSON.stringify({
+            email: loginData.email,
+            password: loginData.password
+        }),
     });
+
     if (response.ok) {
         const data = await response.json();
         localStorage.setItem('isLoggedIn', true);
-        localStorage.setItem('userId', data.userId); // Armazena o ID do usuário
+        localStorage.setItem('userId', data.userId);  // Armazena o ID do usuário
         window.location.href = 'main.html';
     } else {
         alert('Credenciais inválidas');
@@ -38,12 +41,10 @@ async function register(event) {
         password: document.getElementById('password').value,
         userName: document.getElementById('userName').value,
         businessType: document.getElementById('businessType').value,
-        businessDescription: document.getElementById('businessDescription').value,
-        objectives: document.getElementById('objectives').value,
         areasOfInterest: selectedInterests
     };
 
-    const response = await fetch('http://localhost:8000/register/', {
+    const response = await fetch('http://localhost:5000/register/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

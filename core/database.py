@@ -23,7 +23,9 @@ def init_db():
             c.execute('''CREATE TABLE IF NOT EXISTS users
                          (id INTEGER PRIMARY KEY AUTOINCREMENT,
                           username TEXT NOT NULL UNIQUE,
+                          email TEXT NOT NULL UNIQUE,
                           password TEXT NOT NULL,
+                          empreendimento TEXT NOT NULL,
                   interesses TEXT)''')
 
             c.execute('''CREATE TABLE IF NOT EXISTS artigos
@@ -33,14 +35,14 @@ def init_db():
                       link TEXT NOT NULL)''')
 
             users = [
-                ("rafael", "password123", json.dumps(["tecnologia", "cinema", "cultura"])),
-                ("marcos", "password456", json.dumps(["arte", "design", "fotografia"])),
-                ("alice", "password789", json.dumps(["ciência", "biologia"]))
+                ("rafael", "rafa@gmail.com", "password123","loja de doce" ,json.dumps(["tecnologia"])),
+                ("marcos","marcos@gmail.com", "password456","Bar", json.dumps(["gastronomia","tecnologia"])),
+                ("alice","ali@gmail.com" ,"password789","Taberna", json.dumps(["comercio", "gastronomia"]))
             ]
         
         # Insere cada usuário no banco
-            c.executemany('''INSERT INTO users (username, password, interesses)
-                             VALUES (?, ?, ?)''', users)
+            c.executemany('''INSERT INTO users (username, email, password,empreendimento, interesses)
+                             VALUES (?, ?, ?,?,?)''', users)
             print("Usuários inseridos com sucesso!")
 
             artigos = [

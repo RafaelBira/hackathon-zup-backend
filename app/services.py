@@ -3,7 +3,7 @@ import json
 from core.database import get_db_connection
 
 # Função para criar um novo usuário com senha hash
-def create_user(username, password):
+def create_user(username, email, password,  empreendimento, interesse):
     try:
         conn = get_db_connection()
         c = conn.cursor()
@@ -11,8 +11,12 @@ def create_user(username, password):
         # Gerar o hash da senha
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
-        # Inserir o usuário no banco de dados
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
+        # Inserir o usuário no banco de dados com os novos campos
+        c.execute("""
+            INSERT INTO users (username, email,  password, empreendimento, interesse) 
+            VALUES (?, ?, ?, ?, ?)
+        """, (username, hashed_password, email, empreendimento, interesse))
+        
         conn.commit()
     except Exception as e:
         # Logar o erro em vez de apenas imprimir
@@ -20,21 +24,21 @@ def create_user(username, password):
     finally:
         conn.close()
 
-# Função para buscar um usuário pelo nome de usuário
-def find_user_by_username(username):
+# Função para buscar um usuário pelo email do usuario
+def find_user_by_email(email):
     try:
         conn = get_db_connection()
         c = conn.cursor()
         
         # Buscar o usuário pelo nome de usuário
-        c.execute("SELECT * FROM users WHERE username = ?", (username,))
+        c.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = c.fetchone()
         
         # Retornar o usuário (sem expor a senha diretamente)
         if user:
             return {
                 "id": user["id"],
-                "username": user["username"],
+                "email": user["email"],
                 "password": user["password"]  # Certifique-se de não expor isso em respostas de API
             }
         return None

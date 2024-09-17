@@ -1,3 +1,5 @@
 Flask
 sqlite3
  bcrypt
+ llamaapi
+ Flask-Cors
