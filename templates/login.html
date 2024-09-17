@@ -1,30 +1,73 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Melhorar contraste para acessibilidade */
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .btn-primary {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-primary:focus {
+            outline: 3px solid #ffbf47; /* Foco visível para navegação por teclado */
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>Entrar</h2>
-        <form action="/login" method="POST">
+        <h2 id="login-form">Entrar</h2>
+        <form action="/login" method="POST" aria-labelledby="login-form">
             <div class="form-group">
                 <label for="email">E-Mail:</label>
-                <input type="email" class="form-control" id="email" placeholder="Digite o E-Mail" name="email" required>
+                <input type="email" class="form-control" id="email" placeholder="Digite o E-Mail" name="email" required aria-required="true" aria-label="Digite seu e-mail" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">Nós nunca compartilharemos seu e-mail com ninguém.</small>
             </div>
             <div class="form-group">
-                <label for="pwd">Senha:</label>
-                <input type="password" class="form-control" id="password" placeholder="Digite a senha" name="pwd" required>
+                <label for="password">Senha:</label>
+                <input type="password" class="form-control" id="password" placeholder="Digite a senha" name="pwd" required aria-required="true" aria-label="Digite sua senha" aria-describedby="passwordHelp">
+                <small id="passwordHelp" class="form-text text-muted">Sua senha deve ter pelo menos 8 caracteres.</small>
             </div>
-            <button type="submit" class="btn btn-primary">Entrar</button>
+            <div id="error-message" class="sr-only" role="alert" aria-live="assertive"></div>
+            <button type="submit" class="btn btn-primary" aria-label="Entrar no sistema">Entrar</button>
             <div class="mt-2">
-                <a href="register.html">Registrar usuário</a>
+                <a href="register" aria-label="Registrar novo usuário">Registrar usuário</a>
             </div>
         </form>
     </div>
 
+    <!-- Scripts para acessibilidade -->
+    <script>
+        // Exemplo de feedback de erro para acessibilidade
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (!email || !password) {
+                event.preventDefault();
+                errorMessage.textContent = 'Por favor, preencha todos os campos obrigatórios.';
+                errorMessage.classList.remove('sr-only'); // Torna a mensagem visível
+            } else {
+                errorMessage.classList.add('sr-only'); // Esconde a mensagem de erro
+            }
+        });
+    </script>
 </body>
 </html>

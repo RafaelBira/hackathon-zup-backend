@@ -1,27 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página inicial</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Melhorar contraste para acessibilidade */
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .btn-primary {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-primary:focus {
+            outline: 3px solid #ffbf47; /* Foco visível para navegação por teclado */
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>Recomendações para você</h2>
+        <h2 id="recommendations-heading">Recomendações para você</h2>
 
         <!-- Verifica se há recomendações -->
         {% if recommendations %}
             <!-- Itera sobre as recomendações e exibe cada uma em uma div separada -->
             {% for recomendation in recommendations %}
-            <div class="recommendation-item card my-3">
+            <div class="recommendation-item card my-3" role="region" aria-labelledby="recommendation-{{ loop.index }}">
                 <div class="card-body">
-                    <p class="card-title">{{ recomendation }}</p>  <!-- Título da recomendação -->
+                    <p class="card-title" id="recommendation-{{ loop.index }}">{{ recomendation }}</p>  <!-- Título da recomendação -->
                 </div>
             </div>
             {% endfor %}
         {% else %}
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-info" role="alert" aria-live="polite">
                 Nenhuma recomendação disponível.
             </div>
         {% endif %}

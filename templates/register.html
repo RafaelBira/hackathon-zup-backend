@@ -1,65 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Melhorar contraste para acessibilidade */
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .btn-primary {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-primary:focus {
+            outline: 3px solid #ffbf47; /* Foco visível para navegação por teclado */
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>Registrar</h2>
+        <h2 id="register-form">Registrar</h2>
 
-    <!-- Verifica se há mensagens de flash e as exibe -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+        <!-- Verifica se há mensagens de flash e as exibe -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul role="alert" aria-live="assertive">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
 
-        <form action="/register" method="POST">
+        <form action="/register" method="POST" aria-labelledby="register-form">
             <div class="form-group">
                 <label for="userName">Nome de Usuário</label>
-                <input type="text" class="form-control" id="userName" placeholder="Digite um nome de usuário" name="userName" required>
+                <input type="text" class="form-control" id="userName" placeholder="Digite um nome de usuário" name="userName" required aria-required="true" aria-label="Digite seu nome de usuário">
             </div>
             <div class="form-group">
                 <label for="email">E-Mail:</label>
-                <input type="email" class="form-control" id="email" placeholder="Digite um E-Mail" name="email" required>
+                <input type="email" class="form-control" id="email" placeholder="Digite um E-Mail" name="email" required aria-required="true" aria-label="Digite seu e-mail">
             </div>
             <div class="form-group">
                 <label for="password">Senha:</label>
-                <input type="password" class="form-control" id="password" placeholder="Digite uma senha" name="password" required>
+                <input type="password" class="form-control" id="password" placeholder="Digite uma senha" name="password" required aria-required="true" aria-label="Digite sua senha">
             </div>
             <div class="form-group">
-                <label for="businessType">Nome do Empreendimento</label>
-                <input type="text" class="form-control" id="empreendimento" placeholder="Escreva o tipo do seu empreendimento" name="empreendimento" required>
+                <label for="empreendimento">Nome do Empreendimento</label>
+                <input type="text" class="form-control" id="empreendimento" placeholder="Escreva o tipo do seu empreendimento" name="empreendimento" required aria-required="true" aria-label="Digite o nome do seu empreendimento">
             </div>
-           
 
             <!-- Inserindo caixa de seleção para assuntos de interesse -->
-            <fieldset class="form-group">
-                <legend>Selecione assuntos de interesse:</legend>
+            <fieldset class="form-group" aria-labelledby="interest-legend">
+                <legend id="interest-legend">Selecione assuntos de interesse:</legend>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="tecnologia" name="areasOfInterest" value="tecnologia">
-                    <label for="tecnologia" class="form-check-label">Tecnologia</label>
+                    <input type="checkbox" class="form-check-input" id="tecnologia" name="areasOfInterest" value="tecnologia" aria-labelledby="tecnologia-label">
+                    <label for="tecnologia" id="tecnologia-label" class="form-check-label">Tecnologia</label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="comercio" name="areasOfInterest" value="comercio">
-                    <label for="comercio" class="form-check-label">Comércio</label>
+                    <input type="checkbox" class="form-check-input" id="comercio" name="areasOfInterest" value="comercio" aria-labelledby="comercio-label">
+                    <label for="comercio" id="comercio-label" class="form-check-label">Comércio</label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="gastronomia" name="areasOfInterest" value="gastronomia">
-                    <label for="gastronomia" class="form-check-label">Gastronomia</label>
+                    <input type="checkbox" class="form-check-input" id="gastronomia" name="areasOfInterest" value="gastronomia" aria-labelledby="gastronomia-label">
+                    <label for="gastronomia" id="gastronomia-label" class="form-check-label">Gastronomia</label>
                 </div>
             </fieldset>
 
-            <button type="submit" class="btn btn-primary">Registrar</button>
+            <button type="submit" class="btn btn-primary" aria-label="Registrar nova conta">Registrar</button>
         </form>
     </div>
 
+    <!-- Scripts para acessibilidade -->
+    <script>
+        // Exemplo de feedback de erro para acessibilidade
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const userName = document.getElementById('userName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const empreendimento = document.getElementById('empreendimento').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (!userName || !email || !password || !empreendimento) {
+                event.preventDefault();
+                alert('Por favor, preencha todos os campos obrigatórios.');
+            }
+        });
+    </script>
 </body>
 </html>
