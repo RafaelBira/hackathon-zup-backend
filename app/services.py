@@ -4,6 +4,7 @@ from core.database import get_db_connection
 
 # Função para criar um novo usuário com senha hash
 def create_user(username, email, password,  empreendimento, interesse):
+    print(f'username: {username}, email: {email}, password: {password}, interesses: {interesse}')
     try:
         conn = get_db_connection()
         c = conn.cursor()
@@ -13,7 +14,7 @@ def create_user(username, email, password,  empreendimento, interesse):
         c.execute("""
             INSERT INTO users (username, email,  password, empreendimento, interesses) 
             VALUES (?, ?, ?, ?, ?)
-        """, (username, email, password.encode('utf-8'),  empreendimento, interesse))
+        """, (username, email, password,  empreendimento, json.dumps(interesse)))
         
         conn.commit()
     except Exception as e:
@@ -31,7 +32,7 @@ def find_user_by_email(email):
         # Buscar o usuário pelo nome de usuário
         c.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = c.fetchone()
-        
+        print(user)
         # Retornar o usuário (sem expor a senha diretamente)
         if user:
             return {
@@ -58,13 +59,20 @@ def get_all_users():
     # Para cada usuário, buscar seus interesses na tabela `interesses`
     result = []
     for user in users:
-        interesses = json.loads(user['interesses']) if user['interesses'] else []
+        interesses = []
+        if user['interesses']:
+            try:
+                interesses = json.loads(user['interesses'])  # Tenta carregar os interesses como 
+            except json.JSONDecodeError as e:
+                print(f"Erro ao decodificar JSON em `interesses` para o usuário {user['username']}: {e}")
 #        c.execute("SELECT interesse FROM interesses WHERE user_id = ?", (user["id"],))
 #        interesses = [row["interesse"] for row in c.fetchall()]
 
         result.append({
             "id": user["id"],
             "username": user["username"],
+#            "email": user["email"],
+#            "password": user["password"],
             "interesses": interesses
         })
 
