@@ -8,14 +8,12 @@ def create_user(username, email, password,  empreendimento, interesse):
         conn = get_db_connection()
         c = conn.cursor()
         
-        # Gerar o hash da senha
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
-        # Inserir o usuário no banco de dados com os novos campos
+       
         c.execute("""
             INSERT INTO users (username, email,  password, empreendimento, interesses) 
             VALUES (?, ?, ?, ?, ?)
-        """, (username, hashed_password, email, empreendimento, interesse))
+        """, (username, email, password.encode('utf-8'),  empreendimento, interesse))
         
         conn.commit()
     except Exception as e:

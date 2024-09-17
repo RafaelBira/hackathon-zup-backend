@@ -36,13 +36,13 @@ def registrar():
 def login():
     if request.method == 'POST':
         try:
-            email = request.form['email']
-            password = request.form['password']
+            email = request.form.get('email')  # Certifique-se de que o nome do campo é 'email'
+            password = request.form.get('pwd')
             user = find_user_by_email(email)
             if user is None:
-                return jsonify({"error": "Invalid email or password"}), 400
-            if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
-                return jsonify({"error": "Invalid email or password"}), 400
+                return jsonify({"error": "Invalid email "}), 400
+            if not (password== user['password']):
+                return jsonify({"error":  "Invalid password"}), 400
             return render_template('main.html')
         except Exception as e:
             return jsonify({"error": f"An error occurred: {e}"}), 500
