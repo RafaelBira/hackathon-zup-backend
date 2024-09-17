@@ -86,6 +86,6 @@ def main_page():
         recommendations = recommend_articles(user_id)
         
         # Renderiza o template e passa as recomendações
-        return render_template('main.html', recommendations=recommendations)
+        return render_template('main.html', recommendations=recommendations.split(';'))
     except Exception as e:
         return jsonify({"error": f"An error occurred: {e}"}), 500
