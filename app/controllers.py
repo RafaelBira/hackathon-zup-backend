@@ -15,13 +15,6 @@ def registrar():
         return render_template('register.html')  # Certifique-se de ter um arquivo login.html
     elif request.method == 'POST':
         try:
-
-
-
-#            for checkbox in checkboxes:
-#                selected_interests.append(checkbox)
-            
-#            data = request.get_json()
             username = request.form.get('userName')
             email =    request.form.get('email')
             password = request.form.get('password')
@@ -38,37 +31,25 @@ def registrar():
         except Exception as e:
             return jsonify({"error": f"An error occurred: {e}"}), 500
 
-# Rota para login
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        # Retorna a página de login ou uma resposta simples
-        return render_template('login.html')  # Certifique-se de ter um arquivo login.html
-    elif request.method == 'POST':
-        try:
-            email = request.form
-            password = request.form['password']
-            user = find_user_by_email(email)
-            if user is None:
-                return jsonify({"error": "Invalid email or password"}), 400
-            if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
-                return jsonify({"error": "Invalid email or password"}), 400
-            return render_template('main.html')
-        except Exception as e:
-            return jsonify({"error": f"An error occurred: {e}"}), 500
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['pwd']
 
-# Rota para recomendação
-@user_bp.route('/recomendacoes', methods=['GET'])
-def recomendacoes():
-    user_id = request.args.get('user_id', type=int)
-    if not user_id:
-        return jsonify({"error": "Parâmetro `user_id` é obrigatório."}), 400
+        # Verifica se o e-mail existe no banco de dados simulado
+        user = find_user_by_email(email)
+        if user and (bcrypt.checkpw(password.encode('utf-8'), user['password'])):
+            session['user'] = email
+            flash('Login realizado com sucesso!', 'success')
+            return redirect(url_for('main_page'))
+        else:
+            # Autenticação falhou
+            flash('E-mail ou senha incorretos.', 'danger')
+            return redirect(url_for('login'))
 
-    try:
-        recommendations = recommend_articles(user_id)
-        return recommendations.split(';'), 200
-    except Exception as e:
-        return jsonify({"error": f"An error occurred: {e}"}), 500
+    return render_template('login.html')
+
 
 @user_bp.route('/users', methods=['GET'])
 def get_users():
