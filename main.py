@@ -4,6 +4,7 @@ from core.database import init_db
 from app.controllers import user_bp
 
 app = Flask(__name__)
+app.secret_key = 'sansao123'
 CORS(app, resources={r"/*": {"origins": "http://localhost:9000"}})
 
 # Inicializa o banco de dados (cria a tabela se não existir)
