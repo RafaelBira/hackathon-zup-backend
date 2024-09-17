@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h2>Registrar</h2>
-        <form onsubmit="register(event)">
+        <form action="/register" method="POST">
             <div class="form-group">
                 <label for="userName">Nome de Usuário</label>
                 <input type="text" class="form-control" id="userName" placeholder="Digite um nome de usuário" name="userName" required>
@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label for="businessType">Nome do Empreendimento</label>
-                <input type="text" class="form-control" id="businessType" placeholder="Escreva o tipo do seu empreendimento" name="businessType" required>
+                <input type="text" class="form-control" id="empreendimento" placeholder="Escreva o tipo do seu empreendimento" name="empreendimento" required>
             </div>
            
 
@@ -48,6 +48,6 @@
             <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
     </div>
-    <script src="script.js"></script>
+
 </body>
 </html>

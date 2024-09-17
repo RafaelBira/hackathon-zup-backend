@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +9,24 @@
 <body>
     <div class="container">
         <h2>Recomendações para você</h2>
-        <ul id="recomendationsList" class="list-group"></ul>
+
+        <!-- Verifica se há recomendações -->
+        {% if recommendations %}
+            <!-- Itera sobre as recomendações e exibe cada uma em uma div separada -->
+            {% for recomendation in recommendations %}
+            <div class="recommendation-item card my-3">
+                <div class="card-body">
+                    <h3 class="card-title">{{ recomendation.titulo }}</h3>  <!-- Título da recomendação -->
+                    <p class="card-text">{{ recomendation.conteudo }}</p>  <!-- Conteúdo da recomendação -->
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                Nenhuma recomendação disponível.
+            </div>
+        {% endif %}
     </div>
-    <script src="script.js"></script>
+
 </body>
 </html>

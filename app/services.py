@@ -13,7 +13,7 @@ def create_user(username, email, password,  empreendimento, interesse):
         
         # Inserir o usuário no banco de dados com os novos campos
         c.execute("""
-            INSERT INTO users (username, email,  password, empreendimento, interesse) 
+            INSERT INTO users (username, email,  password, empreendimento, interesses) 
             VALUES (?, ?, ?, ?, ?)
         """, (username, hashed_password, email, empreendimento, interesse))
         
